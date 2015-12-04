@@ -88,14 +88,14 @@ def kRandomWalk(graph,k):
 			else:
 				possibleNextStep = graph.neighbors(i)
 				if len(possibleNextStep) == 0:
-					return 0
+					return (0,0,0)
 				startNode = random.choice(possibleNextStep)
 				while graph.node[startNode]['visited'] == True:
 					possibleNextStep.remove(startNode)
 					if len(possibleNextStep) != 0:
 						startNode = random.choice(possibleNextStep)
 					else:
-						return 0
+						return (0,0,0)
 				startNodes[index] = startNode
 				index +=1
 				nodesVisited +=1
@@ -123,7 +123,7 @@ def gnutellaFlooding(graph):
 						nodesToCheck.append(item)
 				nodesToCheck.remove(i)
 				if len(nodesToCheck) == 0:
-					return 0
+					return (0,0)
 			nodesVisited += 1
 
 
@@ -283,7 +283,7 @@ for graphlist in listlist:
 		plt.xlabel("Nodes Visited")
 		plt.ylabel("probability value")
 		plt.scatter(X_Values_nodes,ppList)
-		plt.savefig("plots/nodes/plotDensity{}.png".format(str(densityList[x])[:6]))
+		plt.savefig("plots/nodes/walker/plotDensity{}.png".format(str(densityList[x])[:6]))
 		plt.clf()
 
 
@@ -291,7 +291,61 @@ for graphlist in listlist:
 		plt.xlabel("Time to complete (seconds)")
 		plt.ylabel("probability value")
 		plt.scatter(X_Values_time,ppList)
-		plt.savefig("plots/time/timeAtDensity{}.png".format(str(densityList[x])[:6]))
+		plt.savefig("plots/time/walker/timeAtDensity{}.png".format(str(densityList[x])[:6]))
+		plt.clf()
+
+	for x in range(10):
+		X_Values_nodes = []
+		X_Values_time = []
+
+		for i in range(0,len(kRW_res),10):
+			#Gives us the list of NodesVisted and Time for Density = 0.001
+			X_Values_nodes.append(kRW_res[i+x][0])
+			X_Values_time.append(kRW_res[i+x][1])
+
+		#print(len(RW_res))
+		#print(len(X_Values_nodes),len(ppList))
+		
+		plt.title("K Random Walker N=500 Population Density={}".format(str(densityList[x])[:6]))
+		plt.xlabel("Nodes Visited")
+		plt.ylabel("probability value")
+		plt.scatter(X_Values_nodes,ppList)
+		plt.savefig("plots/nodes/kwalker/kplotDensity{}.png".format(str(densityList[x])[:6]))
+		plt.clf()
+
+
+		plt.title("K Random Walker N=500 Population Density={}".format(str(densityList[x])[:6]))
+		plt.xlabel("Time to complete (seconds)")
+		plt.ylabel("probability value")
+		plt.scatter(X_Values_time,ppList)
+		plt.savefig("plots/time/kwalker/ktimeAtDensity{}.png".format(str(densityList[x])[:6]))
+		plt.clf()
+
+	for x in range(10):
+		X_Values_nodes = []
+		X_Values_time = []
+
+		for i in range(0,len(flood_res),10):
+			#Gives us the list of NodesVisted and Time for Density = 0.001
+			X_Values_nodes.append(flood_res[i+x][0])
+			X_Values_time.append(flood_res[i+x][1])
+
+		#print(len(RW_res))
+		#print(len(X_Values_nodes),len(ppList))
+		
+		plt.title("Gnutella Flood N=500 Population Density={}".format(str(densityList[x])[:6]))
+		plt.xlabel("Nodes Visited")
+		plt.ylabel("probability value")
+		plt.scatter(X_Values_nodes,ppList)
+		plt.savefig("plots/nodes/flood/floodplotDensity{}.png".format(str(densityList[x])[:6]))
+		plt.clf()
+
+
+		plt.title("Gnutella Flood N=500 Population Density={}".format(str(densityList[x])[:6]))
+		plt.xlabel("Time to complete (seconds)")
+		plt.ylabel("probability value")
+		plt.scatter(X_Values_time,ppList)
+		plt.savefig("plots/time/flood/floodtimeAtDensity{}.png".format(str(densityList[x])[:6]))
 		plt.clf()
 
 
