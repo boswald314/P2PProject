@@ -218,19 +218,21 @@ for glist in graphlist:
 	flood_res = []
 
 	#going threw the 100 graphs for each 500,1000,2000,5000
-	for graph in glist:
+	popdensity = 0.001
+	while popdensity <= .01:
+		for i in range(int(numberOfNodes*popdensity)):
+				numberOfNodes -= 1
+				graph.node[random.randint(0, numberOfNodes)]['targetNode'] = True
+
 		
 		nx.set_node_attributes(graph, "targetNode", False)
 		nx.set_node_attributes(graph, "visited", False)
 
-		#base population density
-		popdensity = 0.001
-		while popdensity <= .01:
+		for graph in glist:
+
 			nx.set_node_attributes(graph, "targetNode", False)
 			numberOfNodes = graph.number_of_nodes()
-			for i in range(int(numberOfNodes*popdensity)):
-				numberOfNodes -= 1
-				graph.node[random.randint(0, numberOfNodes)]['targetNode'] = True
+			
 			
 			RW_res.append(randomWalk(graph))
 
@@ -241,7 +243,7 @@ for glist in graphlist:
 			flood_res.append(gnutellaFlooding(graph))
 
 			nx.set_node_attributes(graph, "visited", False)
-			popdensity += 0.001
+		popdensity += 0.001
 		#										first 10 are for 0.001 endos and .001 to .01 popdensity
 		#at this point point we have a list = 	[pop = 0.001(x,y),pop=.002(x,y)...pop=.01(x,y) |||  
 		#onto next 10 with p=.00015 - pop = 0.001(x,y),pop=.002(x,y)...pop=.01(x,y) ]
