@@ -50,14 +50,14 @@ def randomWalk(graph):
 		graph.node[startNode]['visited'] = True
 		possibleNextStep = graph.neighbors(startNode)
 		if len(possibleNextStep) == 0:
-			return 0
+			return (0,0)
 		startNode = random.choice(possibleNextStep)
 		while graph.node[startNode]['visited'] == True:
 			possibleNextStep.remove(startNode)
 			if len(possibleNextStep) != 0:
 				startNode = random.choice(possibleNextStep)
 			else:
-				return 0
+				return (0,0)
 				
 		nodesVisited +=1
 
@@ -174,34 +174,35 @@ graphs500 = []
 graphs1000 = []
 graphs2000 = []
 graphs5000 = []
-graphlist = [graphs500]#, graphs1000, graphs2000, graphs5000]
+listlist = [graphs500]#, graphs1000, graphs2000, graphs5000]
 #generate a number of random erdos renyi graphs of sizes and prob from 0.0001 to 0.05
 
-p = 0.0001
+p = 0
 n = 500
 ppList = []
 while p <= 0.05 :
-   	graphs500.append(nx.erdos_renyi_graph(n,p))
-   	ppList.append(p)
-   	p += 0.000499
+	p += 0.0005
+	graphs500.append(nx.erdos_renyi_graph(n,p))
+	ppList.append(p)
+	
 '''
 p = 0.0001
 n = 1000
 while p <= 0.05 :
-   	graphs1000.append(nx.erdos_renyi_graph(n,p))   
-   	p += 0.000499	
+	graphs1000.append(nx.erdos_renyi_graph(n,p))   
+	p += 0.000499	
 
 p = 0.0001
 n = 2000
 while p <= 0.05 :
-   	graphs2000.append(nx.erdos_renyi_graph(n,p))
-   	p += 0.000499
+	graphs2000.append(nx.erdos_renyi_graph(n,p))
+	p += 0.000499
 
 p = 0.0001
 n = 5000
 while p <= 0.05 :
-   	graphs5000.append(nx.erdos_renyi_graph(n,p))
-   	p += 0.000499
+	graphs5000.append(nx.erdos_renyi_graph(n,p))
+	p += 0.000499
 '''
 
 res500 = []
@@ -209,30 +210,38 @@ res1000 = []
 res2000 = []
 res5000 = []
 
+x = 0.001
+densityList = []
+for i in range(10):
+	densityList.append(x)
+	x += 0.001
 
 #graphs of size 500,1000,2000,5000
-for glist in graphlist:
+for graphlist in listlist:
+	graphindex = 0
 
 	RW_res = []
 	kRW_res = []
 	flood_res = []
-
+	#print(len(glist))
 	#going threw the 100 graphs for each 500,1000,2000,5000
-	for graph in glist:
+	for graph in graphlist:
 		
 		nx.set_node_attributes(graph, "targetNode", False)
 		nx.set_node_attributes(graph, "visited", False)
 
 		#base population density
-		popdensity = 0.001
-		while popdensity <= .01:
+		density = 0.001
+		while density <= .01:
+			
 			nx.set_node_attributes(graph, "targetNode", False)
 			numberOfNodes = graph.number_of_nodes()
-			for i in range(int(numberOfNodes*popdensity)):
+			for i in range(int(numberOfNodes*density)):
 				numberOfNodes -= 1
 				graph.node[random.randint(0, numberOfNodes)]['targetNode'] = True
-			
-			RW_res.append(randomWalk(graph))
+			res = randomWalk(graph)
+			#print(res)
+			RW_res.append(res)
 
 			nx.set_node_attributes(graph, "visited", False)
 			kRW_res.append(kRandomWalk(graph,5))
@@ -241,43 +250,52 @@ for glist in graphlist:
 			flood_res.append(gnutellaFlooding(graph))
 
 			nx.set_node_attributes(graph, "visited", False)
-			popdensity += 0.001
-		#										first 10 are for 0.001 endos and .001 to .01 popdensity
-		#at this point point we have a list = 	[pop = 0.001(x,y),pop=.002(x,y)...pop=.01(x,y) |||  
-		#onto next 10 with p=.00015 - pop = 0.001(x,y),pop=.002(x,y)...pop=.01(x,y) ]
-		#										where x = nodes and y = time
+			density += 0.001
+			density = float(str(density)[:6])
 
+		'''
+		nx.draw(graph)
+		plt.savefig("plots/graphs/Graph with N={} and p={}.png".format(numberOfNodes, ppList[graphindex]))
+		plt.clf
+		'''
 
-		#pop = 0.0001
-		#popden .001 to .01
-		#^^ first 10
-
-		#pop = 0.0001 + .499
-		#next 10
-
-
-
-		#x = nodes visited
-		#y = probability
-		#graph with target node population at 0.001, n = 500
-		#add of the ones with 0.001 pop
-
-
-	#RW_res is list of two tuples (nodesVisted, timeElapsed)
 
 	X_Values_nodes = []
 	X_Values_time = []
-	myY_Values = []
-	for pval in ppList:
-		for i in range(10):
-			X_Values_nodes.append(RW_res[i][0])
-			X_Values_time.append(RW_res[i][1])
-		myY_Values.append(pval)
+	
+	#RW_res is list of two tuples (nodesVisted, timeElapsed)
+
+	#RW_res = [x for x in RW_res if x!=0]
+
+	for x in range(10):
+		X_Values_nodes = []
+		X_Values_time = []
+
+		for i in range(0,len(RW_res),10):
+			#Gives us the list of NodesVisted and Time for Density = 0.001
+			X_Values_nodes.append(RW_res[i+x][0])
+			X_Values_time.append(RW_res[i+x][1])
+
+		#print(len(RW_res))
+		#print(len(X_Values_nodes),len(ppList))
+		
+		plt.title("Random Walker N=500 Population Density={}".format(str(densityList[x])[:6]))
+		plt.xlabel("Nodes Visited")
+		plt.ylabel("probability value")
+		plt.scatter(X_Values_nodes,ppList)
+		plt.savefig("plots/nodes/plotDensity{}.png".format(str(densityList[x])[:6]))
+		plt.clf()
+
+
+		plt.title("Random Walker N=500 Population Density={}".format(str(densityList[x])[:6]))
+		plt.xlabel("Time to complete (seconds)")
+		plt.ylabel("probability value")
+		plt.scatter(X_Values_time,ppList)
+		plt.savefig("plots/time/timeAtDensity{}.png".format(str(densityList[x])[:6]))
+		plt.clf()
 
 
 
-
-	plt.title("Random Walk N=500 p=0.0001")
 
 '''
 	X_Values_nodes = []
