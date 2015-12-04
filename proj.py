@@ -35,15 +35,15 @@ popd = .001
 n = 500
 
 
-for i in range(100):
+for i in range(10):
 	g = nx.erdos_renyi_graph(n,p)
 	graphs.append(g)
 	fig = nx.draw(g)
 	name = "plots/graphs/n"+str(n)+"p"+str(p)[:6]+".png"
 	plt.savefig(name)
 	plt.clf()
-	p += 0.0005
-	n += 5
+	p += 0.001
+	#n += 5
 	
 
 
