@@ -30,12 +30,12 @@ def graph_distribution(graph):
 
 graphs = []
 
-p = 0.0001
+p = 0.001
 popd = .001
 n = 500
 
 
-for i in range(10):
+for i in range(50):
 	g = nx.erdos_renyi_graph(n,p)
 	graphs.append(g)
 	fig = nx.draw(g)
