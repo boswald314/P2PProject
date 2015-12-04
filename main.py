@@ -6,7 +6,7 @@ import time
 
 #generate a number of random erdos renyi graphs of sizes and prob from 0.0001 to 0.05
 p = 0.01
-n = 2000
+n = 5000
 #while p <= 0.05 :
 #    p += 0.0501/100
 
@@ -113,7 +113,6 @@ def kRandomWalk(graph,k):
     print("Hi Bryan!")
 
 
-
 def gnutellaFlooding(graph):
     numberOfNodes = graph.number_of_nodes() -1
     nodesToCheck = [random.randint(0, numberOfNodes)]
@@ -134,14 +133,12 @@ def gnutellaFlooding(graph):
                     if graph.node[item]['visited'] == False:
                         nodesToCheck.append(item)
                 nodesToCheck.remove(i)
-                if len(nodesToCheck) == 0:
-                    print ("unable to find target node.")
-                    return ("unable to find target node.")
             nodesVisited += 1
 
-if nx.is_connected(graph1) == True:
-    print("The diameter is: "+ str(nx.diameter(graph1)))
 #randomWalk(graph1)
+
+
+
 #kRandomWalk(graph1,5)
 gnutellaFlooding(graph1)
 print("done")
