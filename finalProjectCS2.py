@@ -87,8 +87,14 @@ def kRandomWalk(graph,k):
 				return (nodesVisited,end-start,hopsBeforeFound)
 			else:
 				possibleNextStep = graph.neighbors(i)
+
 				if len(possibleNextStep) == 0:
 					return (0,0,0)
+
+				for item in possibleNextStep:
+					if graph.node[item]['targetNode'] == True:
+						end = time.time()
+						return (nodesVisited,end-start,hopsBeforeFound)
 				startNode = random.choice(possibleNextStep)
 				while graph.node[startNode]['visited'] == True:
 					possibleNextStep.remove(startNode)

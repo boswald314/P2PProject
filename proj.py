@@ -39,7 +39,7 @@ for i in range(100):
 	g = nx.erdos_renyi_graph(n,p)
 	graphs.append(g)
 	fig = nx.draw(g)
-	name = "img/n"+str(n)+"p"+str(p)[:6]+".png"
+	name = "plots/graphs/n"+str(n)+"p"+str(p)[:6]+".png"
 	plt.savefig(name)
 	plt.clf()
 	p += 0.0005
