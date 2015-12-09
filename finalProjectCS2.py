@@ -88,13 +88,14 @@ class Graph:
 		print("randomWalk: Performs random walk to find target node\n\ttakes graph object as single parameter\nReturns tuple:\n\t(number of nodes visited, time elapsed)\n\tif node cannot be found, both values are returned 0\n")
 		print("kRandomWalk: Performs k random walk to find target node\ntakes graph object as first parameter\n\ttakes k value (correspoding to number of random walkers) as second parameter\nReturns tuple:\n\t(number of nodes visited, time elapsed, hops made (by each walker, not total))\n\tif node cannot be found, all values are returned 0\n")
 		print("gnutellaFlooding: Performs gnutella flooding to find target node\ntakes ttl as first parameter (deafault is 7)\nReturns tuple:\n\t(number of nodes visited, time elapsed)\n\tif node cannot be found, both values are returned 0\n")
+		print("show: draws and displays graph")
 
 	def listen(self):
 		'''
 			for real time interaction with graph object
 			provides access to functions and attributes from cli
 		'''
-		functs = {"help":self.help,"isConnected":self.isConnected,"number_of_nodes":self.number_of_nodes,"numberOfComponents":self.numberOfComponents,"randomWalk":self.randomWalk,"kRandomWalk":self.kRandomWalk,"gnutellaFlooding":self.gnutellaFlooding}
+		functs = {"help":self.help,"isConnected":self.isConnected,"number_of_nodes":self.number_of_nodes,"numberOfComponents":self.numberOfComponents,"randomWalk":self.randomWalk,"kRandomWalk":self.kRandomWalk,"gnutellaFlooding":self.gnutellaFlooding,"show":self.show}
 		while True:
 			x = input().strip().split()
 			if (x == "end"):
@@ -105,6 +106,9 @@ class Graph:
 					break
 				print(fun(*x[1:]))
 
+	def show(self):
+		nx.draw(self.graph)
+		plt.show()
 
 	def diamDist(self, n, minp, maxp):
 		'''
