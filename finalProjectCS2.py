@@ -76,9 +76,9 @@ class Graph:
 			if (x == "end"):
 				break
 			else:
-				if (x == None):
-					break
 				fun = functs.get(x[0])
+				if (fun == None):
+					break
 				print(fun(*x[1:]))
 
 
@@ -500,6 +500,8 @@ if __name__ == "__main__":
 			break
 		else:
 			fun = funcs.get(x[0])
+			if (fun == None):
+				break
 			fun(*x[1:])
 
 
