@@ -187,7 +187,16 @@ def diamDist(n, minp, maxp):
 	plt.savefig("DiameterDistributionGraph.png")
 
 
+def initializeGraph(graph,popd):
+	nx.set_node_attributes(graph, "targetNode", False)
+	nx.set_node_attributes(graph, "visited", False)
 
+	numberOfObjects = int(graph.number_of_nodes() * popd)
+	for i in range(numberOfObjects):
+		node = getRandomNode(graph)
+		node['targetNode'] = True
+
+	return graph
 
 
 
@@ -377,16 +386,7 @@ def getRandomNode(graph):
 	nodes = graph.number_of_nodes()
 	return graph.node[random.randint(0, nodes - 1)]
 
-def initializeGraph(graph,popd):
-	nx.set_node_attributes(graph, "targetNode", False)
-	nx.set_node_attributes(graph, "visited", False)
 
-	numberOfObjects = int(graph.number_of_nodes() * popd)
-	for i in range(numberOfObjects):
-		node = getRandomNode(graph)
-		node['targetNode'] = True
-
-	return graph
 
 
 
