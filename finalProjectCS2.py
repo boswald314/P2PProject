@@ -510,7 +510,7 @@ def listcommands(cmd=''):
 	if (cmd==''):
 		print("test: simple test function, generates a graph and lists results for each search strategy")
 		print("run: runs main function we used to generate graphs, search, and plot results (warning -- VERY long run time -- used to generate plots)")
-		print("graphinfo: genrates a graph and prints information regarding its structure")
+		print("graphinfo|gi: genrates a graph and prints information regarding its structure")
 		print("Graph: generate a graph object which you can call functions on and read attributes from")
 		print("end: exit")
 		print("help: display this message")
