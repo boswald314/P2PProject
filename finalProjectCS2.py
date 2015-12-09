@@ -345,7 +345,10 @@ def run():
 
 def test():
 	graph = nx.erdos_renyi_graph(1000,0.1)
-	print(graph.number_of_nodes())
+	print("the test graph has {} nodes".format(graph.number_of_nodes()))
+
+
+
 
 
 if __name__ == "__main__":
