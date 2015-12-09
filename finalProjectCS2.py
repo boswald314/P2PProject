@@ -41,6 +41,13 @@ import time
 
 	
 def randomWalk(graph):
+	'''
+		Performs random walk to find target node
+			takes graph object as single parameter
+		Returns tuple:
+			(number of nodes visited, time elapsed)
+			if node cannot be found, both values are returned 0
+	'''
 	numberOfNodes = graph.number_of_nodes() -1
 	startNode = random.randint(0, numberOfNodes)
 	nodesVisited = 1
@@ -66,7 +73,15 @@ def randomWalk(graph):
 	  
 
 
-def kRandomWalk(graph,k):
+def kRandomWalk(graph,k=5):
+	'''
+		Performs k random walk to find target node
+			takes graph object as first parameter
+			takes k value (correspoding to number of random walkers) as second parameter
+		Returns tuple:
+			(number of nodes visited, time elapsed, hops made (by each walker, not total))
+			if node cannot be found, all values are returned 0
+	'''
 	numberOfNodes = graph.number_of_nodes()
 	startNodes = [0]*k
 	for i in range(0,k):
@@ -110,6 +125,14 @@ def kRandomWalk(graph,k):
 
 
 def gnutellaFlooding(graph, ttl=7):
+	'''
+		Performs gnutella flooding to find target node
+			takes graph object as first parameter
+			second parameter is ttl of flood, defaults to 7
+		Returns tuple:
+			(number of nodes visited, time elapsed)
+			if node cannot be found, both values are returned 0
+	'''
 	numberOfNodes = graph.number_of_nodes()
 	nodesToCheck = [random.randint(0, numberOfNodes - 1)]
 	nodesVisited = 1
@@ -117,7 +140,7 @@ def gnutellaFlooding(graph, ttl=7):
 	start = time.time()
 	while True:
 		if (nodesVisited > ttl):
-			return(nodesVisited, end-start)
+			return(0, 0)
 		for i in nodesToCheck:
 			graph.node[i]['visited'] = True
 			if graph.node[i]['targetNode'] == True:
@@ -349,13 +372,44 @@ def run():
 		X_Values_time = []
 
 
+def getRandomNode(graph):
+	nodes = graph.number_of_nodes()
+	return graph.node[random.randint(0, nodes - 1)]
+
+def initializeGraph(graph,popd):
+	nx.set_node_attributes(graph, "targetNode", False)
+	nx.set_node_attributes(graph, "visited", False)
+
+	numberOfObjects = int(graph.number_of_nodes() * popd)
+	for i in range(numberOfObjects):
+		node = getRandomNode(graph)
+		node['targetNode'] = True
+
+	return graph
 
 
 
 
-def test():
-	graph = nx.erdos_renyi_graph(1000,0.1)
-	print("the test graph has {} nodes".format(graph.number_of_nodes()))
+
+def test(n=1000,p=0.05,popd=0.05):
+	n = int(n)
+	p = float(p)
+	popd = float(popd)
+
+	graph = nx.erdos_renyi_graph(n,p)
+	graph = initializeGraph(graph, popd)
+
+	print("The graph contained {} nodes, was generated with p={}, and has an object density of {}".format(n,p,popd))
+	res = randomWalk(graph)
+	print("The random walker visited {} nodes and took {} seconds".format(res[0],res[1]))
+	nx.set_node_attributes(graph, "visited", False)
+	res = kRandomWalk(graph,5)
+	print(res)
+	print("The k random walkers visited {} nodes over {} seconds and {} rounds of hops".format(res[0],res[1],res[2]))
+	res = gnutellaFlooding(graph)
+	print("The gnutella flood sent {} queries and took {} seconds".format(res[0],res[1]))
+
+
 
 
 
@@ -364,12 +418,18 @@ def test():
 if __name__ == "__main__":
 	funcs = {"test":test}
 
-	print("Enter 'test' for test")
+	print("Enter 'test' for test function\n\toptional parameters:\n\t\tnumber of nodes\n\t\tp value for Erdos-Renyi graph\n\t\tobject population density value\n\ti.e. 'test 500 0.05 0.05' would run with default values\n'end' to exit")
 
-	while True:
-		x = input()
-		fun = funcs.get(x)
-		fun()
+	running = True
+	while running:
+		x = input().split(' ')
+		if (x == "end"):
+			break
+
+		fun = funcs.get(x[0])
+
+
+		fun(*x[1:])
 
 
 
