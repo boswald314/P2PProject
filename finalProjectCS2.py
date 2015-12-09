@@ -103,7 +103,7 @@ def gnutellaFlooding(graph):
 			nodesVisited += 1
 
 
-def degDist(n, minp, maxp):
+def diameterDist(n, minp, maxp):
     number = maxp - minp
     xList = []
     yList = []
@@ -121,23 +121,25 @@ def degDist(n, minp, maxp):
     plt.xlabel('Diameter')
     plt.ylabel('Probability')
     plt.scatter(xList,yList)
-    plt.savefig("DegreeDistributionGraph{}.png".format(str(n)))
+    plt.savefig("DiameterDistributionGraph{}.png".format(str(n)))
 
 
 def main1():
     # Degree distribution for n = 500
     degDist(500,0.0001,0.05)
-    print("Graph for Degree distribution, n = 500 made!")
+    print("Graph for Diameter distribution, n = 500 made!")
     
     # Degree distribution for n = 1000
     degDist(1000,0.0001,0.05)
-    print("Graph for Degree distribution, n = 1000 made!")
+    print("Graph for Diameter distribution, n = 1000 made!")
+    """
     # Degree distribution for n = 2000
     degDist(2000,0.0001,0.05)
-    print("Graph for Degree distribution, n = 2000 made!")
+    print("Graph for Diameter distribution, n = 2000 made!")
     # Degree distribution for n = 5000
     degDist(5000,0.0001,0.05)
-    print("Graph for Degree distribution, n = 5000 made!")
+    print("Graph for Diameter distribution, n = 5000 made!")
+    """
     
 main1()
 
