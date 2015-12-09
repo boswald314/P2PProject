@@ -155,7 +155,7 @@ def degDist(n, minp, maxp):
 		
 	plt.scatter(xList,yList)
 	#plt.show()
-	plt.savefig("DegreeDistributionGraph.png")
+	plt.savefig("DiameterDistributionGraph.png")
 
 
 
@@ -342,6 +342,11 @@ def run():
 
 		X_Values_nodes = []
 		X_Values_time = []
+
+
+
+
+
 
 def test():
 	graph = nx.erdos_renyi_graph(1000,0.1)
