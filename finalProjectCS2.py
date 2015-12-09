@@ -247,8 +247,7 @@ for graphlist in listlist:
 			nx.set_node_attributes(graph, "targetNode", False)
 			numberOfNodes = graph.number_of_nodes()
 			for i in range(int(numberOfNodes*density)):
-				numberOfNodes -= 1
-				graph.node[random.randint(0, numberOfNodes)]['targetNode'] = True
+				graph.node[random.randint(0,numberOfNodes-1)]['targetNode'] = True
 			res = randomWalk(graph)
 			#print(res)
 			RW_res.append(res)
