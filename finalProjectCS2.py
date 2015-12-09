@@ -391,7 +391,7 @@ def initializeGraph(graph,popd):
 
 
 
-def test(n=1000,p=0.05,popd=0.05):
+def test(n=1000,p=0.01,popd=0.005):
 	n = int(n)
 	p = float(p)
 	popd = float(popd)
@@ -404,24 +404,35 @@ def test(n=1000,p=0.05,popd=0.05):
 	print("The random walker visited {} nodes and took {} seconds".format(res[0],res[1]))
 	nx.set_node_attributes(graph, "visited", False)
 	res = kRandomWalk(graph,5)
-	print(res)
 	print("The k random walkers visited {} nodes over {} seconds and {} rounds of hops".format(res[0],res[1],res[2]))
 	res = gnutellaFlooding(graph)
-	print("The gnutella flood sent {} queries and took {} seconds".format(res[0],res[1]))
+	print("The gnutella flood sent {} queries and took {} seconds\n".format(res[0],res[1]))
 
 
 
+def listcommands(cmd=''):
+	print("Commands available:")
+	if (cmd==''):
+		print("test: simple test function, generates a graph and lists results for each search strategy")
+		print("run: runs main function we used to generate graphs, search, and plot results (warning -- long run time)")
+		print("help: display this message")
+	elif (cmd=='test'):
+		print("test generates a graph and lists results for each search strategy")
+		print("It takes three optional parameters:")
+		print("\tN: number of nodes in graph to be used")
+		print("\tp: value of p to be used in generating Erdos-Renyi graph")
+		print("\tpopd: the population density at which objects should appear in the graph")
 
+	print("\n")
 
 
 
 if __name__ == "__main__":
-	funcs = {"test":test}
+	funcs = {"test":test, "run":run, "help":listcommands}
 
-	print("Enter 'test' for test function\n\toptional parameters:\n\t\tnumber of nodes\n\t\tp value for Erdos-Renyi graph\n\t\tobject population density value\n\ti.e. 'test 500 0.05 0.05' would run with default values\n'end' to exit")
+	print("Type a command. ('help' for help)\n")
 
-	running = True
-	while running:
+	while True:
 		x = input().split(' ')
 		if (x == "end"):
 			break
