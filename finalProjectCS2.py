@@ -357,7 +357,7 @@ if __name__ == "__main__":
 	print("Enter 'test' for test")
 
 	while True:
-		x = raw_input()
+		x = input()
 		fun = funcs.get(x)
 		fun()
 
