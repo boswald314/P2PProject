@@ -182,8 +182,13 @@ graphs5000 = []
 listlist = [graphs500, graphs1000, graphs2000, graphs5000]
 #generate a number of random erdos renyi graphs of sizes and prob from 0.0001 to 0.05
 
+
+FACTOR = 100
+
+
+
 p = 0
-n = 500
+n = 5 * FACTOR
 ppList = []
 while p <= 0.05 :
 	p += 0.0005
@@ -192,19 +197,19 @@ while p <= 0.05 :
 	
 
 p = 0
-n = 1000
+n = 10 * FACTOR
 while p <= 0.05 :
 	p += 0.0005	
 	graphs1000.append(nx.erdos_renyi_graph(n,p))   
 
 p = 0
-n = 2000
+n = 20 * FACTOR
 while p <= 0.05 :
 	p += 0.0005
 	graphs2000.append(nx.erdos_renyi_graph(n,p))
 
 p = 0
-n = 5000
+n = 50 * FACTOR
 while p <= 0.05 :
 	p += 0.0005
 	graphs5000.append(nx.erdos_renyi_graph(n,p))
@@ -229,7 +234,6 @@ for graphlist in listlist:
 	kRW_res = []
 	flood_res = []
 
-	numN = 500
 
 	#going through the 100 graphs for each 500,1000,2000,5000
 	for graph in graphlist:
@@ -283,19 +287,19 @@ for graphlist in listlist:
 
 
 		
-		plt.title("Random Walker N={} Population Density={}".format(str(numN), str(densityList[x])[:6]))
+		plt.title("Random Walker N={} Population Density={}".format(str(numberOfNodes), str(densityList[x])[:6]))
 		plt.xlabel("Nodes Visited")
 		plt.ylabel("probability value")
 		plt.scatter(X_Values_nodes,ppList)
-		plt.savefig("plots/nodes/walker/plotDensity{}.png".format(str(densityList[x])[:6]))
+		plt.savefig("plots/nodes/walker/N={}plotDensity{}.png".format(str(numberOfNodes), str(densityList[x])[:6]))
 		plt.clf()
 
 
-		plt.title("Random Walker N={} Population Density={}".format(str(numN), str(densityList[x])[:6]))
+		plt.title("Random Walker N={} Population Density={}".format(str(numberOfNodes), str(densityList[x])[:6]))
 		plt.xlabel("Time to complete (seconds)")
 		plt.ylabel("probability value")
 		plt.scatter(X_Values_time,ppList)
-		plt.savefig("plots/time/walker/timeAtDensity{}.png".format(str(densityList[x])[:6]))
+		plt.savefig("plots/time/walker/N={}timeAtDensity{}.png".format(str(numberOfNodes), str(densityList[x])[:6]))
 		plt.clf()
 
 		X_Values_nodes = []
@@ -307,22 +311,20 @@ for graphlist in listlist:
 			X_Values_nodes.append(kRW_res[i+x][0])
 			X_Values_time.append(kRW_res[i+x][1])
 
-		print(len(kRW_res))
-		print(len(X_Values_nodes),len(ppList))
 		
-		plt.title("K Random Walker N={} Population Density={}".format(str(numN), str(densityList[x])[:6]))
+		plt.title("K Random Walker N={} Population Density={}".format(str(numberOfNodes), str(densityList[x])[:6]))
 		plt.xlabel("Nodes Visited")
 		plt.ylabel("probability value")
 		plt.scatter(X_Values_nodes,ppList)
-		plt.savefig("plots/nodes/kwalker/kplotDensity{}.png".format(str(densityList[x])[:6]))
+		plt.savefig("plots/nodes/kwalker/N={}kplotDensity{}.png".format(str(numberOfNodes), str(densityList[x])[:6]))
 		plt.clf()
 
 
-		plt.title("K Random Walker N={} Population Density={}".format(str(numN), str(densityList[x])[:6]))
+		plt.title("K Random Walker N={} Population Density={}".format(str(numberOfNodes), str(densityList[x])[:6]))
 		plt.xlabel("Time to complete (seconds)")
 		plt.ylabel("probability value")
 		plt.scatter(X_Values_time,ppList)
-		plt.savefig("plots/time/kwalker/ktimeAtDensity{}.png".format(str(densityList[x])[:6]))
+		plt.savefig("plots/time/kwalker/N={}ktimeAtDensity{}.png".format(str(numberOfNodes), str(densityList[x])[:6]))
 		plt.clf()
 
 		X_Values_nodes = []
@@ -337,22 +339,21 @@ for graphlist in listlist:
 
 
 		
-		plt.title("Gnutella Flood N={} Population Density={}".format(str(numN), str(densityList[x])[:6]))
+		plt.title("Gnutella Flood N={} Population Density={}".format(str(numberOfNodes), str(densityList[x])[:6]))
 		plt.xlabel("Nodes Visited")
 		plt.ylabel("probability value")
 		plt.scatter(X_Values_nodes,ppList)
-		plt.savefig("plots/nodes/flood/floodplotDensity{}.png".format(str(densityList[x])[:6]))
+		plt.savefig("plots/nodes/flood/N={}floodplotDensity{}.png".format(str(numberOfNodes), str(densityList[x])[:6]))
 		plt.clf()
 
 
-		plt.title("Gnutella Flood N={} Population Density={}".format(str(numN), str(densityList[x])[:6]))
+		plt.title("Gnutella Flood N={} Population Density={}".format(str(numberOfNodes), str(densityList[x])[:6]))
 		plt.xlabel("Time to complete (seconds)")
 		plt.ylabel("probability value")
 		plt.scatter(X_Values_time,ppList)
-		plt.savefig("plots/time/flood/floodtimeAtDensity{}.png".format(str(densityList[x])[:6]))
+		plt.savefig("plots/time/flood/N={}floodtimeAtDensity{}.png".format(str(numberOfNodes), str(densityList[x])[:6]))
 		plt.clf()
 
-		numN = numN * 2
 
 	X_Values_nodes = []
 	X_Values_time = []
