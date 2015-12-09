@@ -109,13 +109,15 @@ def kRandomWalk(graph,k):
 
 
 
-def gnutellaFlooding(graph):
+def gnutellaFlooding(graph, ttl=7):
 	numberOfNodes = graph.number_of_nodes()
 	nodesToCheck = [random.randint(0, numberOfNodes - 1)]
 	nodesVisited = 1
 	
 	start = time.time()
 	while True:
+		if (nodesVisited > ttl):
+			return(nodesVisited, end-start)
 		for i in nodesToCheck:
 			graph.node[i]['visited'] = True
 			if graph.node[i]['targetNode'] == True:
@@ -130,6 +132,9 @@ def gnutellaFlooding(graph):
 				if len(nodesToCheck) == 0:
 					return (0,0)
 			nodesVisited += 1
+
+
+
 
 
 def diamDist(n, minp, maxp):
