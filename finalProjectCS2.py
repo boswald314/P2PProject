@@ -50,27 +50,50 @@ class Graph:
 		self.initializeGraph(p)
 
 	def isConnected(self):
+		'''
+			Returns True if graph is connected, else False
+		'''
 		return nx.is_connected(self.graph)
 
 	def getRandomNode(self):
+		'''
+			Returns a node selected at random from the graph
+		'''
 		nodes = self.graph.number_of_nodes()
 		return self.graph.node[random.randint(0, nodes - 1)]
 
 	def number_of_nodes(self):
+		'''
+			Returns the number of nodes in the graph
+		'''
 		return nx.number_of_nodes(self.graph)
 
 	def numberOfComponents(self):
+		'''
+			Returns the number of distinct components in the graph
+		'''
 		return nx.number_connected_components(self.graph)
 
 	def connectedSubgraphs(self):
+		'''
+			Returns connected subgraphs as iterable of graphs
+		'''
 		return nx.connected_component_subgraphs(self.graph)
+
+	def help(self):
+		print("isConnected: Returns True if graph is connected, else False\n")
+		print("number_of_nodes: Returns the number of nodes in the graph\n")
+		print("numberOfComponents: Returns the number of distinct components in the graph\n")
+		print("randomWalk: Performs random walk to find target node\n\ttakes graph object as single parameter\nReturns tuple:\n\t(number of nodes visited, time elapsed)\n\tif node cannot be found, both values are returned 0\n")
+		print("kRandomWalk: Performs k random walk to find target node\ntakes graph object as first parameter\n\ttakes k value (correspoding to number of random walkers) as second parameter\nReturns tuple:\n\t(number of nodes visited, time elapsed, hops made (by each walker, not total))\n\tif node cannot be found, all values are returned 0\n")
+		print("gnutellaFlooding: Performs gnutella flooding to find target node\ntakes ttl as first parameter (deafault is 7)\nReturns tuple:\n\t(number of nodes visited, time elapsed)\n\tif node cannot be found, both values are returned 0\n")
 
 	def listen(self):
 		'''
 			for real time interaction with graph object
 			provides access to functions and attributes from cli
 		'''
-		functs = {"isConnected":self.isConnected,"number_of_nodes":self.number_of_nodes,"numberOfComponents":self.numberOfComponents,"diamDist":self.diamDist,"randomWalk":self.randomWalk,"kRandomWalk":self.kRandomWalk,"gnutellaFlooding":self.gnutellaFlooding}
+		functs = {"help":self.help,"isConnected":self.isConnected,"number_of_nodes":self.number_of_nodes,"numberOfComponents":self.numberOfComponents,"randomWalk":self.randomWalk,"kRandomWalk":self.kRandomWalk,"gnutellaFlooding":self.gnutellaFlooding}
 		while True:
 			x = input().strip().split()
 			if (x == "end"):
@@ -83,6 +106,9 @@ class Graph:
 
 
 	def diamDist(self, n, minp, maxp):
+		'''
+			Plots diameter distribution for Erdos-Renyi graphs with p in range(0.005,0.05)
+		'''
 		number = maxp - minp
 		xList = []
 		yList = []
@@ -108,6 +134,9 @@ class Graph:
 		plt.savefig("DiameterDistributionGraph.png")
 
 	def initializeGraph(self, popd):
+		'''
+			Set node attributes for targetNode and visited to False for all nodes in graph
+		'''
 		nx.set_node_attributes(self.graph, "targetNode", False)
 		nx.set_node_attributes(self.graph, "visited", False)
 
@@ -199,8 +228,7 @@ class Graph:
 	def gnutellaFlooding(self, ttl=7):
 		'''
 			Performs gnutella flooding to find target node
-				takes graph object as first parameter
-				second parameter is ttl of flood, defaults to 7
+				takes ttl of flood as first parameter defaults to 7
 			Returns tuple:
 				(number of nodes visited, time elapsed)
 				if node cannot be found, both values are returned 0
@@ -230,7 +258,7 @@ class Graph:
 
 
 
-def run():
+def run(FACTOR=100):
 
 	graphs500 = []
 	graphs1000 = []
@@ -240,7 +268,6 @@ def run():
 
 
 	#generate a number of random erdos renyi graphs of sizes and prob from 0.0001 to 0.05
-	FACTOR = 100
 
 	p = 0
 	n = 5 * FACTOR
@@ -434,7 +461,7 @@ def test(n=1000,p=0.01,popd=0.005):
 
 
 
-def graphinfo(n=1000,p=0.01):
+def graphinfo(n=5000,p=0.0005):
 	n = int(n)
 	p = float(p)
 
@@ -448,20 +475,34 @@ def graphinfo(n=1000,p=0.01):
 		print("The graph has {} componenets".format(graph.numberOfComponents()))
 
 		componentSizes = []
-		componentSizes.append(graph.number_of_nodes())
-		for subgraph in graph.connectedSubgraphs():
+		#componentSizes.append(graph.number_of_nodes())
+		subgraphList = graph.connectedSubgraphs()
+		for subgraph in subgraphList:
 			componentSizes.append(subgraph.number_of_nodes())
-
 
 		singleNodes = 0
 		while componentSizes[-1] == 1:
 			singleNodes += 1
 			componentSizes = componentSizes[:-1]
+		numMultiNodeComponents = len(componentSizes)
+
 
 		if (len(componentSizes)==1):	
 			print("The graph consisted of one large component of size {} and {} single nodes\n".format(componentSizes[0],singleNodes))
 		else:
 			print("The graph consisted of one large component of size {}, {} smaller components, and {} single nodes\n".format(componentSizes[0],len(componentSizes) - 1, singleNodes))
+
+
+		if (numMultiNodeComponents > 50):
+			print("duh")
+			subgraphList = graph.connectedSubgraphs()
+			for subgraph in subgraphList:
+				numNodes = subgraph.number_of_nodes()
+				if numNodes == 1:
+					continue
+				else:
+					numCompons = nx.number_connected_components(subgraph)
+					print("subgraph of size {} with {} connected components".format(numNodes,numCompons))
 
 
 def createGraph(n=1000,p=0.01):
@@ -473,10 +514,13 @@ def listcommands(cmd=''):
 	print("Commands available:")
 	if (cmd==''):
 		print("test: simple test function, generates a graph and lists results for each search strategy")
-		print("run: runs main function we used to generate graphs, search, and plot results (warning -- long run time)")
+		print("run: runs main function we used to generate graphs, search, and plot results (warning -- VERY long run time -- used to generate plots)")
 		print("graphinfo: genrates a graph and prints information regarding its structure")
+		print("Graph: generate a graph object which you can call functions on and read attributes from")
 		print("end: exit")
 		print("help: display this message")
+	elif (cmd=='Graph'):
+		print('create a Graph then type help for more info')
 	elif (cmd=='test'):
 		print("test generates a graph and lists results for each search strategy")
 		print("It takes three optional parameters:")
