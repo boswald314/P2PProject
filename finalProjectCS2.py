@@ -38,6 +38,7 @@ import networkx as nx
 import random
 import matplotlib.pyplot as plt
 import time
+from collections import defaultdict
 
 
 
@@ -487,22 +488,16 @@ def graphinfo(n=5000,p=0.0005):
 		numMultiNodeComponents = len(componentSizes)
 
 
-		if (len(componentSizes)==1):	
-			print("The graph consisted of one large component of size {} and {} single nodes\n".format(componentSizes[0],singleNodes))
-		else:
-			print("The graph consisted of one large component of size {}, {} smaller components, and {} single nodes\n".format(componentSizes[0],len(componentSizes) - 1, singleNodes))
+		subgraphList = graph.connectedSubgraphs()
+		components = defaultdict(int)
+		for subgraph in subgraphList:
+			numNodes = subgraph.number_of_nodes()
+			components[numNodes] += 1
 
-
-		if (numMultiNodeComponents > 50):
-			print("duh")
-			subgraphList = graph.connectedSubgraphs()
-			for subgraph in subgraphList:
-				numNodes = subgraph.number_of_nodes()
-				if numNodes == 1:
-					continue
-				else:
-					numCompons = nx.number_connected_components(subgraph)
-					print("subgraph of size {} with {} connected components".format(numNodes,numCompons))
+		for size,num in components.items():
+			print("There were {} components of size {}".format(num,size))
+		print("\n")
+				
 
 
 def createGraph(n=1000,p=0.01):
