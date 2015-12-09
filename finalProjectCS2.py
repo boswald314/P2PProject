@@ -121,18 +121,18 @@ def diameterDist(n, minp, maxp):
     plt.xlabel('Diameter')
     plt.ylabel('Probability')
     plt.scatter(xList,yList)
-    plt.savefig("DiameterDistributionGraph{}.png".format(str(n)))
+    plt.savefig("DiameterDistributionGraphn={}.png".format(str(n)))
 
 
 def main1():
     # Degree distribution for n = 500
     diameterDist(500,0.0001,0.05)
     print("Graph for Diameter distribution, n = 500 made!")
-    
+    """
     # Degree distribution for n = 1000
     diameterDist(1000,0.0001,0.05)
     print("Graph for Diameter distribution, n = 1000 made!")
-    """
+    
     # Degree distribution for n = 2000
     degDist(2000,0.0001,0.05)
     print("Graph for Diameter distribution, n = 2000 made!")
