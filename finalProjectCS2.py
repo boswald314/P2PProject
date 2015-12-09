@@ -415,6 +415,7 @@ def listcommands(cmd=''):
 	if (cmd==''):
 		print("test: simple test function, generates a graph and lists results for each search strategy")
 		print("run: runs main function we used to generate graphs, search, and plot results (warning -- long run time)")
+		print("end: exit")
 		print("help: display this message")
 	elif (cmd=='test'):
 		print("test generates a graph and lists results for each search strategy")
@@ -436,11 +437,9 @@ if __name__ == "__main__":
 		x = input().split(' ')
 		if (x == "end"):
 			break
-
-		fun = funcs.get(x[0])
-
-
-		fun(*x[1:])
+		else:
+			fun = funcs.get(x[0])
+			fun(*x[1:])
 
 
 
