@@ -214,7 +214,7 @@ def run():
 
 
 	#generate a number of random erdos renyi graphs of sizes and prob from 0.0001 to 0.05
-	FACTOR = 1
+	FACTOR = 100
 
 	p = 0
 	n = 5 * FACTOR
