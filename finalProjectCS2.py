@@ -44,7 +44,10 @@ import time
 
 class Graph:
 	def __init__(self, n, p):
+		n = int(n)
+		p = float(p)
 		self.graph = nx.erdos_renyi_graph(n,p)
+		self.initializeGraph(p)
 
 	def isConnected(self):
 		return nx.is_connected(self.graph)
@@ -59,14 +62,25 @@ class Graph:
 	def numberOfComponents(self):
 		return nx.number_connected_components(self.graph)
 
-	def stronglyConnected(self):
-		return nx.is_strongly_connected(self.graph)
-
-	def numStrongComponents(self):
-		return nx.number_strongly_connected_components(self.graph)
-
 	def connectedSubgraphs(self):
 		return nx.connected_component_subgraphs(self.graph)
+
+	def listen(self):
+		'''
+			for real time interaction with graph object
+			provides access to functions and attributes from cli
+		'''
+		functs = {"isConnected":self.isConnected,"number_of_nodes":self.number_of_nodes,"numberOfComponents":self.numberOfComponents,"diamDist":self.diamDist,"randomWalk":self.randomWalk,"kRandomWalk":self.kRandomWalk,"gnutellaFlooding":self.gnutellaFlooding}
+		while True:
+			x = input().strip().split()
+			if (x == "end"):
+				break
+			else:
+				if (x == None):
+					break
+				fun = functs.get(x[0])
+				print(fun(*x[1:]))
+
 
 	def diamDist(self, n, minp, maxp):
 		number = maxp - minp
@@ -418,11 +432,49 @@ def test(n=1000,p=0.01,popd=0.005):
 	res = graph.gnutellaFlooding()
 	print("The gnutella flood sent {} queries and took {} seconds\n".format(res[0],res[1]))
 
+
+
+def graphinfo(n=1000,p=0.01):
+	n = int(n)
+	p = float(p)
+
+	graph = Graph(n,p)
+	print("Created graph with {} nodes and p = {}".format(n,p))
+
+	print(graph.isConnected())
+	if graph.isConnected():
+		print("The graph is connected\n")
+	else:
+		print("The graph has {} componenets".format(graph.numberOfComponents()))
+
+		componentSizes = []
+		componentSizes.append(graph.number_of_nodes())
+		for subgraph in graph.connectedSubgraphs():
+			componentSizes.append(subgraph.number_of_nodes())
+
+
+		singleNodes = 0
+		while componentSizes[-1] == 1:
+			singleNodes += 1
+			componentSizes = componentSizes[:-1]
+
+		if (len(componentSizes)==1):	
+			print("The graph consisted of one large component of size {} and {} single nodes\n".format(componentSizes[0],singleNodes))
+		else:
+			print("The graph consisted of one large component of size {}, {} smaller components, and {} single nodes\n".format(componentSizes[0],len(componentSizes) - 1, singleNodes))
+
+
+def createGraph(n=1000,p=0.01):
+	graph = Graph(n,p)
+	graph.listen()
+
+
 def listcommands(cmd=''):
 	print("Commands available:")
 	if (cmd==''):
 		print("test: simple test function, generates a graph and lists results for each search strategy")
 		print("run: runs main function we used to generate graphs, search, and plot results (warning -- long run time)")
+		print("graphinfo: genrates a graph and prints information regarding its structure")
 		print("end: exit")
 		print("help: display this message")
 	elif (cmd=='test'):
@@ -434,46 +486,16 @@ def listcommands(cmd=''):
 
 	print("\n")
 
-def graphinfo(n=1000,p=0.01):
-	n = int(n)
-	p = float(p)
-
-	graph = Graph(n,p)
-	print("Created graph with {} nodes and p = {}".format(n,p))
-
-	if graph.isConnected():
-		print("The graph is connected\n")
-	else:
-		print("The graph has {} componenets".format(graph.numberOfComponents()))
-
-		componentSizes = []
-		for graph in graph.connectedSubgraphs():
-			componentSizes.append(graph.number_of_nodes())
-
-		singleNodes = 0
-		while componentSizes[-1] == 1:
-			singleNodes += 1
-			componentSizes = componentSizes[:-1]
-
-		if (len(componentSizes)==1):	
-			print("The graph consisted of one large component of size {} and {} single nodes".format(componentSizes[0],singleNodes))
-		else:
-			print("The graph consisted of one large component of size {}, {} smaller components, and {} single nodes".format(componentSizes[0],len(componentSizes) - 1, singleNodes))
-
-
-
-
-
 
 
 
 if __name__ == "__main__":
-	funcs = {"test":test, "run":run, "help":listcommands, "graphinfo":graphinfo}
+	funcs = {"test":test, "run":run, "help":listcommands, "graphinfo":graphinfo, "gi":graphinfo, "Graph":createGraph}
 
 	print("Type a command. ('help' for help)\n")
 
 	while True:
-		x = input().split(' ')
+		x = input().strip().split(' ')
 		if (x == "end"):
 			break
 		else:
