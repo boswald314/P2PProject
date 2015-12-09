@@ -115,7 +115,7 @@ def degDist(n, minp, maxp):
             yList.append(p)
             xList.append(graphDiameter)
         p += number/100
-        print(p)
+        #print(p)
     
     plt.title('Diameter Distribution Graph, n = {}'.format(str(n)))
     plt.xlabel('Diameter')
@@ -128,7 +128,7 @@ def main1():
     # Degree distribution for n = 500
     degDist(500,0.0001,0.05)
     print("Graph for Degree distribution, n = 500 made!")
-    """
+    
     # Degree distribution for n = 1000
     degDist(1000,0.0001,0.05)
     print("Graph for Degree distribution, n = 1000 made!")
@@ -138,7 +138,7 @@ def main1():
     # Degree distribution for n = 5000
     degDist(5000,0.0001,0.05)
     print("Graph for Degree distribution, n = 5000 made!")
-    """
+    
 main1()
 
 def main():
