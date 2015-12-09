@@ -67,12 +67,12 @@ def randomWalk(graph):
 
 
 def kRandomWalk(graph,k):
-	numberOfNodes = graph.number_of_nodes() -1
+	numberOfNodes = graph.number_of_nodes()
 	startNodes = [0]*k
 	for i in range(0,k):
-		nodeToAdd = random.randint(0, numberOfNodes)
+		nodeToAdd = random.randint(0, numberOfNodes - 1)
 		while nodeToAdd in startNodes[:i]:
-			nodeToAdd = random.randint(0, numberOfNodes)
+			nodeToAdd = random.randint(0, numberOfNodes - 1)
 		startNodes[i] = nodeToAdd
 	nodesVisited = 1
 	hopsBeforeFound = 0
@@ -110,8 +110,8 @@ def kRandomWalk(graph,k):
 
 
 def gnutellaFlooding(graph):
-	numberOfNodes = graph.number_of_nodes() -1
-	nodesToCheck = [random.randint(0, numberOfNodes)]
+	numberOfNodes = graph.number_of_nodes()
+	nodesToCheck = [random.randint(0, numberOfNodes - 1)]
 	nodesVisited = 1
 	
 	start = time.time()
@@ -132,7 +132,7 @@ def gnutellaFlooding(graph):
 			nodesVisited += 1
 
 
-def degDist(n, minp, maxp):
+def diamDist(n, minp, maxp):
 	number = maxp - minp
 	xList = []
 	yList = []
