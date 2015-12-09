@@ -56,6 +56,18 @@ class Graph:
 	def number_of_nodes(self):
 		return nx.number_of_nodes(self.graph)
 
+	def numberOfComponents(self):
+		return nx.number_connected_components(self.graph)
+
+	def stronglyConnected(self):
+		return nx.is_strongly_connected(self.graph)
+
+	def numStrongComponents(self):
+		return nx.number_strongly_connected_components(self.graph)
+
+	def connectedSubgraphs(self):
+		return nx.connected_component_subgraphs(self.graph)
+
 	def diamDist(self, n, minp, maxp):
 		number = maxp - minp
 		xList = []
@@ -422,10 +434,41 @@ def listcommands(cmd=''):
 
 	print("\n")
 
+def graphinfo(n=1000,p=0.01):
+	n = int(n)
+	p = float(p)
+
+	graph = Graph(n,p)
+	print("Created graph with {} nodes and p = {}".format(n,p))
+
+	if graph.isConnected():
+		print("The graph is connected\n")
+	else:
+		print("The graph has {} componenets".format(graph.numberOfComponents()))
+
+		componentSizes = []
+		for graph in graph.connectedSubgraphs():
+			componentSizes.append(graph.number_of_nodes())
+
+		singleNodes = 0
+		while componentSizes[-1] == 1:
+			singleNodes += 1
+			componentSizes = componentSizes[:-1]
+
+		if (len(componentSizes)==1):	
+			print("The graph consisted of one large component of size {} and {} single nodes".format(componentSizes[0],singleNodes))
+		else:
+			print("The graph consisted of one large component of size {}, {} smaller components, and {} single nodes".format(componentSizes[0],len(componentSizes) - 1, singleNodes))
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
-	funcs = {"test":test, "run":run, "help":listcommands}
+	funcs = {"test":test, "run":run, "help":listcommands, "graphinfo":graphinfo}
 
 	print("Type a command. ('help' for help)\n")
 
