@@ -225,15 +225,13 @@ class Graph:
 				return (0, 0)
 			for i in nodesToCheck:
 				nodesVisited += 1
-				self.graph.node[i]['visited'] = True
 				if self.graph.node[i]['targetNode'] == True:
 					end = time.time()
 					return (nodesVisited, end-start)
 				else:
 					neighbors = self.graph.neighbors(i)
 					for item in neighbors:
-						if self.graph.node[item]['visited'] == False:
-							nodesToCheck.append(item)
+						nodesToCheck.append(item)
 					nodesToCheck.remove(i)
 					if len(nodesToCheck) == 0:
 						return (0,0)
