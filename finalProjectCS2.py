@@ -216,13 +216,15 @@ class Graph:
 		'''
 		numberOfNodes = self.graph.number_of_nodes()
 		nodesToCheck = [random.randint(0, numberOfNodes - 1)]
+		queryRounds = 1
 		nodesVisited = 1
 		
 		start = time.time()
 		while True:
-			if (nodesVisited > ttl):
-				return(0, 0)
+			if (queryRounds > ttl):
+				return (0, 0)
 			for i in nodesToCheck:
+				nodesVisited += 1
 				self.graph.node[i]['visited'] = True
 				if self.graph.node[i]['targetNode'] == True:
 					end = time.time()
@@ -235,7 +237,7 @@ class Graph:
 					nodesToCheck.remove(i)
 					if len(nodesToCheck) == 0:
 						return (0,0)
-				nodesVisited += 1
+			queryRounds += 1
 
 
 
