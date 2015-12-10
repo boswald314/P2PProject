@@ -44,11 +44,11 @@ from collections import defaultdict
 
 
 class Graph:
-	def __init__(self, n, p):
+	def __init__(self, n, p, popd=0.001):
 		n = int(n)
 		p = float(p)
 		self.graph = nx.erdos_renyi_graph(n,p)
-		self.initializeGraph(p)
+		self.initializeGraph(popd)
 
 	def isConnected(self):
 		'''
@@ -236,6 +236,7 @@ class Graph:
 					if len(nodesToCheck) == 0:
 						return (0,0)
 			queryRounds += 1
+
 
 
 
@@ -465,6 +466,49 @@ def test(n=1000,p=0.01,popd=0.005):
 	res = graph.gnutellaFlooding()
 	print("The gnutella flood sent {} queries and took {} seconds\n".format(res[0],res[1]))
 
+def testFlood(n=1000,pmin=0.0001,pmax=0.05,popdmin=0.002,popdmax=0.009):
+	n = int(n)
+	pmin = float(pmin)
+	pmax = float(pmax)
+	popdmin = float(popdmin)
+	popdmax = float(popdmax)
+
+	print("Graph with {} nodes, starting flood trials".format(n))
+	floodResults = []
+	Y_values = []
+
+	dStep = (popdmin + popdmax) / 10
+	densityList = []
+	density = popdmin
+	for i in range(10):
+		densityList.append(float(str(density)[:5]))
+		density += dStep
+
+	stepSize = (pmin + pmax) / 10
+	p = pmin
+	for i in range(10):
+		Y_values.append(p)
+		p += stepSize
+
+	for density in densityList:
+		for p in Y_values:
+			graph = Graph(n, p, density)
+			res = graph.gnutellaFlooding()
+			floodResults.append(res[0])
+			print(res[1])
+		print("Finished with density {}".format(density))
+
+	offset = 0
+	for i in range(10):
+		plt.title("Gnutella Flood N={} Population Density={}".format(n, densityList[i]))
+		plt.xlabel("Nodes Visited")
+		plt.ylabel("probability value")
+		plt.scatter(floodResults[:10],Y_values)
+		plt.savefig("plots/nodes/flood/N={}floodplotDensity{}.png".format(n, densityList[i]))
+		plt.clf()
+
+		floodResults = floodResults[10:]
+
 
 
 def graphinfo(n=5000,p=0.0005):
@@ -535,7 +579,7 @@ def listcommands(cmd=''):
 
 
 if __name__ == "__main__":
-	funcs = {"test":test, "run":run, "help":listcommands, "graphinfo":graphinfo, "gi":graphinfo, "Graph":createGraph, "diameterDist":diameterDist}
+	funcs = {"test":test, "run":run, "help":listcommands, "graphinfo":graphinfo, "gi":graphinfo, "Graph":createGraph, "diameterDist":diameterDist, "testFlood":testFlood}
 
 	print("Type a command. ('help' for help)\n")
 
