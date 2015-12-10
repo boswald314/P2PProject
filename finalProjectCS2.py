@@ -110,34 +110,6 @@ class Graph:
 		nx.draw(self.graph)
 		plt.show()
 
-	def diamDist(self, n, minp, maxp):
-		'''
-			Plots diameter distribution for Erdos-Renyi graphs with p in range(0.005,0.05)
-		'''
-		number = maxp - minp
-		xList = []
-		yList = []
-		#iterations = 0
-		while p <= 0.05:
-			#print(p)
-			graph = nx.erdos_renyi_graph(n, p)
-			if self.isConnected == True:
-				graphDiameter = nx.diameter(self.graph)
-				yList.append(p)
-				xList.append(graphDiameter)
-				print("The diameter is: "+ str(graphDiameter))
-			else:
-				print("Diameter cannot be found")
-			p += number/100
-
-		plt.title('Diameter Distribution Graph')
-		plt.xlabel('Diameter')
-		plt.ylabel('Probability')
-			
-		plt.scatter(xList,yList)
-		#plt.show()
-		plt.savefig("DiameterDistributionGraph.png")
-
 	def initializeGraph(self, popd):
 		'''
 			Set node attributes for targetNode and visited to False for all nodes in graph
@@ -261,6 +233,34 @@ class Graph:
 						return (0,0)
 				nodesVisited += 1
 
+
+def diamDist(n, minp, maxp):
+	'''
+		Plots diameter distribution for Erdos-Renyi graphs with p in range(0.005,0.05)
+	'''
+	number = maxp - minp
+	xList = []
+	yList = []
+	#iterations = 0
+	while p <= 0.05:
+		#print(p)
+		graph = nx.erdos_renyi_graph(n, p)
+		if self.isConnected == True:
+			graphDiameter = nx.diameter(self.graph)
+			yList.append(p)
+			xList.append(graphDiameter)
+			print("The diameter is: "+ str(graphDiameter))
+		else:
+			print("Diameter cannot be found")
+		p += number/100
+
+	plt.title('Diameter Distribution Graph')
+	plt.xlabel('Diameter')
+	plt.ylabel('Probability')
+		
+	plt.scatter(xList,yList)
+	#plt.show()
+	plt.savefig("DiameterDistributionGraph.png")
 
 
 def run(FACTOR=100):
