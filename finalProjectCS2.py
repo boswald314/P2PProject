@@ -479,9 +479,9 @@ def testFlood(n=1000,pmin=0.0001,pmax=0.05,popdmin=0.002,popdmax=0.009):
 		densityList.append(float(str(density)[:5]))
 		density += dStep
 
-	stepSize = (pmin + pmax) / 10
+	stepSize = (pmin + pmax) / 100
 	p = pmin
-	for i in range(10):
+	for i in range(100):
 		Y_values.append(p)
 		p += stepSize
 
