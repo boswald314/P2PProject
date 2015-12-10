@@ -99,7 +99,7 @@ class Graph:
 			for real time interaction with graph object
 			provides access to functions and attributes from cli
 		'''
-		functs = {"help":self.help,"isConnected":self.isConnected,"number_of_nodes":self.number_of_nodes,"numberOfComponents":self.numberOfComponents,"randomWalk":self.randomWalk,"kRandomWalk":self.kRandomWalk,"gnutellaFlooding":self.gnutellaFlooding,"show":self.show}
+		functs = {"gnuFlood":self.gnuFlood, "help":self.help,"isConnected":self.isConnected,"number_of_nodes":self.number_of_nodes,"numberOfComponents":self.numberOfComponents,"randomWalk":self.randomWalk,"kRandomWalk":self.kRandomWalk,"gnutellaFlooding":self.gnutellaFlooding,"show":self.show}
 		while True:
 			x = input().strip().split()
 			if (x == "end"):
@@ -216,27 +216,22 @@ class Graph:
 				if node cannot be found, both values are returned 0
 		'''
 		numberOfNodes = self.graph.number_of_nodes()
-		nodesToCheck = [random.randint(0, numberOfNodes - 1)]
-		nodesVisited = 1
-		
+		initialNode = (random.randint(0, numberOfNodes - 1))
+		nodesVisited = 0
+		nodesToCheck = [initialNode]
+
 		start = time.time()
-		while True:
-			if (nodesVisited > ttl):
-				return(0, 0)
-			for i in nodesToCheck:
-				self.graph.node[i]['visited'] = True
-				if self.graph.node[i]['targetNode'] == True:
+		for i in range(ttl):
+			for node in nodesToCheck:
+				if self.graph.node[node]['targetNode'] == True:
 					end = time.time()
 					return (nodesVisited, end-start)
 				else:
-					neighbors = self.graph.neighbors(i)
-					for item in neighbors:
-						if self.graph.node[item]['visited'] == False:
-							nodesToCheck.append(item)
-					nodesToCheck.remove(i)
-					if len(nodesToCheck) == 0:
-						return (0,0)
+					for neighbor in self.graph.neighbors(node):
+						nodesToCheck.append(neighbor)
+					nodesToCheck.remove(node)
 				nodesVisited += 1
+		return (0,0)
 
 
 
