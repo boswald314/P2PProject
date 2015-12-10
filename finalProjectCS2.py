@@ -99,7 +99,7 @@ class Graph:
 			for real time interaction with graph object
 			provides access to functions and attributes from cli
 		'''
-		functs = {"gnuFlood":self.gnuFlood, "help":self.help,"isConnected":self.isConnected,"number_of_nodes":self.number_of_nodes,"numberOfComponents":self.numberOfComponents,"randomWalk":self.randomWalk,"kRandomWalk":self.kRandomWalk,"gnutellaFlooding":self.gnutellaFlooding,"show":self.show}
+		functs = {"help":self.help,"isConnected":self.isConnected,"number_of_nodes":self.number_of_nodes,"numberOfComponents":self.numberOfComponents,"randomWalk":self.randomWalk,"kRandomWalk":self.kRandomWalk,"gnutellaFlooding":self.gnutellaFlooding,"show":self.show}
 		while True:
 			x = input().strip().split()
 			if (x == "end"):
