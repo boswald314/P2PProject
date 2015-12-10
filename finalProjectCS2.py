@@ -445,7 +445,7 @@ def run(FACTOR=100):
 
 
 
-def test(n=1000,p=0.01,popd=0.005):
+def test(n=500,p=0.01,popd=0.005):
 	n = int(n)
 	p = float(p)
 	popd = float(popd)
@@ -554,6 +554,7 @@ def listcommands(cmd=''):
 		print("graphinfo|gi: genrates a graph and prints information regarding its structure")
 		print("Graph: generate a graph object which you can call functions on and read attributes from")
 		print("diameterDist: Plots diameter distribution for Erdos-Renyi graphs of size n=500 with p from pmin=0.0001 to pmax=0.05 using graphs=100 graphs")
+		print("testFlood: Runs flood search on graph of size N=500 for varying p and population density")
 		print("end: exit")
 		print("help: display this message")
 	elif (cmd=='Graph'):
