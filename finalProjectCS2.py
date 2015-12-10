@@ -209,33 +209,34 @@ class Graph:
 	def gnutellaFlooding(self, ttl=7):
 		'''
 			Performs gnutella flooding to find target node
-				takes ttl of flood as first parameter defaults to 7
+				takes graph object as first parameter
+				second parameter is ttl of flood, defaults to 7
 			Returns tuple:
 				(number of nodes visited, time elapsed)
 				if node cannot be found, both values are returned 0
 		'''
 		numberOfNodes = self.graph.number_of_nodes()
 		nodesToCheck = [random.randint(0, numberOfNodes - 1)]
-		queryRounds = 1
 		nodesVisited = 1
 		
 		start = time.time()
 		while True:
-			if (queryRounds > ttl):
-				return (0, 0)
+			if (nodesVisited > ttl):
+				return(0, 0)
 			for i in nodesToCheck:
-				nodesVisited += 1
+				self.graph.node[i]['visited'] = True
 				if self.graph.node[i]['targetNode'] == True:
 					end = time.time()
 					return (nodesVisited, end-start)
 				else:
 					neighbors = self.graph.neighbors(i)
 					for item in neighbors:
-						nodesToCheck.append(item)
+						if self.graph.node[item]['visited'] == False:
+							nodesToCheck.append(item)
 					nodesToCheck.remove(i)
 					if len(nodesToCheck) == 0:
 						return (0,0)
-			queryRounds += 1
+				nodesVisited += 1
 
 
 
@@ -495,8 +496,6 @@ def testFlood(n=1000,pmin=0.0001,pmax=0.05,popdmin=0.002,popdmax=0.009):
 			graph = Graph(n, p, density)
 			res = graph.gnutellaFlooding()
 			floodResults.append(res[0])
-			print(res[1])
-		print("Finished with density {}".format(density))
 
 	offset = 0
 	for i in range(10):
