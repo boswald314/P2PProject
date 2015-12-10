@@ -450,8 +450,7 @@ def test(n=1000,p=0.01,popd=0.005):
 	p = float(p)
 	popd = float(popd)
 
-	graph = Graph(n,p)
-	graph.initializeGraph(popd)
+	graph = Graph(n,p,popd)
 
 	print("The graph contained {} nodes, was generated with p={}, and has an object density of {}".format(n,p,popd))
 	res = graph.randomWalk()
@@ -512,7 +511,6 @@ def graphinfo(n=5000,p=0.0005):
 	graph = Graph(n,p)
 	print("Created graph with {} nodes and p = {}".format(n,p))
 
-	print(graph.isConnected())
 	if graph.isConnected():
 		print("The graph is connected\n")
 	else:
