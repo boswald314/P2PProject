@@ -81,6 +81,10 @@ class Graph:
 		'''
 		return nx.connected_component_subgraphs(self.graph)
 
+	def diameter(self):
+		return nx.diameter(self.graph)
+
+
 	def help(self):
 		print("isConnected: Returns True if graph is connected, else False\n")
 		print("number_of_nodes: Returns the number of nodes in the graph\n")
@@ -234,33 +238,30 @@ class Graph:
 				nodesVisited += 1
 
 
-def diamDist(n, minp, maxp):
+
+
+def diameterDist(n=500, minp=0.0001, maxp=0.05, graphs=100):
 	'''
-		Plots diameter distribution for Erdos-Renyi graphs with p in range(0.005,0.05)
+		Plots diameter distribution for Erdos-Renyi graphs with p in range(0.0001,0.05)
+			if graph is not connected it is discarded
 	'''
-	number = maxp - minp
+	stepSize = (maxp - minp) / graphs
 	xList = []
 	yList = []
-	#iterations = 0
-	while p <= 0.05:
-		#print(p)
-		graph = nx.erdos_renyi_graph(n, p)
-		if self.isConnected == True:
-			graphDiameter = nx.diameter(self.graph)
+	p = minp
+	while p <= maxp:
+		graph = Graph(n, p)
+		if (graph.isConnected()) == True:
 			yList.append(p)
-			xList.append(graphDiameter)
-			print("The diameter is: "+ str(graphDiameter))
-		else:
-			print("Diameter cannot be found")
-		p += number/100
-
-	plt.title('Diameter Distribution Graph')
+			xList.append(graph.diameter())
+		p += stepSize
+	
+	plt.title('Diameter Distribution Graph, n = {}'.format(str(n)))
 	plt.xlabel('Diameter')
 	plt.ylabel('Probability')
-		
 	plt.scatter(xList,yList)
-	#plt.show()
-	plt.savefig("DiameterDistributionGraph.png")
+	plt.savefig("diamDistN={}minp={}maxp={}graphs={}.png".format(str(n),minp,maxp,graphs))
+
 
 
 def run(FACTOR=100):
@@ -516,6 +517,7 @@ def listcommands(cmd=''):
 		print("run: runs main function we used to generate graphs, search, and plot results (warning -- VERY long run time -- used to generate plots)")
 		print("graphinfo|gi: genrates a graph and prints information regarding its structure")
 		print("Graph: generate a graph object which you can call functions on and read attributes from")
+		print("diameterDist: Plots diameter distribution for Erdos-Renyi graphs of size n=500 with p from pmin=0.0001 to pmax=0.05 using graphs=100 graphs")
 		print("end: exit")
 		print("help: display this message")
 	elif (cmd=='Graph'):
@@ -533,7 +535,7 @@ def listcommands(cmd=''):
 
 
 if __name__ == "__main__":
-	funcs = {"test":test, "run":run, "help":listcommands, "graphinfo":graphinfo, "gi":graphinfo, "Graph":createGraph}
+	funcs = {"test":test, "run":run, "help":listcommands, "graphinfo":graphinfo, "gi":graphinfo, "Graph":createGraph, "diameterDist":diameterDist}
 
 	print("Type a command. ('help' for help)\n")
 
